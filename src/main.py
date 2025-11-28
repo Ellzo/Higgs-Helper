@@ -75,16 +75,20 @@ def cmd_chunk(args: argparse.Namespace) -> int:
                 "id": chunk.id,
                 "text": chunk.text,
                 "metadata": {
-                    "source_doc_id": chunk.metadata.source_doc_id,
-                    "section_title": chunk.metadata.section_title,
-                    "chunk_type": chunk.metadata.chunk_type.value,
-                    "tags": list(chunk.metadata.tags),
-                    "char_start": chunk.metadata.char_start,
-                    "char_end": chunk.metadata.char_end,
+                    "source": chunk.metadata.source,
+                    "source_id": chunk.metadata.source_id,
+                    "section": chunk.metadata.section,
+                    "chunk_index": chunk.metadata.chunk_index,
+                    "chunk_type": chunk.metadata.chunk_type,
+                    "tags": chunk.metadata.tags,
+                    "start_char": chunk.metadata.start_char,
+                    "end_char": chunk.metadata.end_char,
                     "has_latex": chunk.metadata.has_latex,
                     "has_code": chunk.metadata.has_code,
-                    "physics_terms": list(chunk.metadata.physics_terms),
-                    "confidence_score": chunk.metadata.confidence_score,
+                    "code_language": chunk.metadata.code_language,
+                    "physics_terms": chunk.metadata.physics_terms,
+                    "detector_mentions": chunk.metadata.detector_mentions,
+                    "particle_mentions": chunk.metadata.particle_mentions,
                 },
             }
             f.write(json.dumps(chunk_dict, ensure_ascii=False) + "\n")
@@ -98,7 +102,7 @@ def cmd_chunk(args: argparse.Namespace) -> int:
     code_count = 0
     
     for chunk in all_chunks:
-        ct = chunk.metadata.chunk_type.value
+        ct = chunk.metadata.chunk_type
         chunk_types[ct] = chunk_types.get(ct, 0) + 1
         if chunk.metadata.has_latex:
             latex_count += 1
